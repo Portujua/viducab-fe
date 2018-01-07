@@ -11,9 +11,14 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
+import { LoginFormComponent } from '../components/login-form/login-form';
+import { RegisterFormComponent } from '../components/register-form/register-form';
+
 import { HttpClientModule } from '@angular/common/http';
 
+import { RESTService } from './services/_rest.service'
 import { AuthService } from './services/auth.service';
+import { UserProvider } from '../providers/user/user.provider';
 
 @NgModule({
   declarations: [
@@ -21,7 +26,9 @@ import { AuthService } from './services/auth.service';
     AccountPage,
     ContactPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    LoginFormComponent,
+    RegisterFormComponent
   ],
   imports: [
     BrowserModule,
@@ -34,13 +41,17 @@ import { AuthService } from './services/auth.service';
     AccountPage,
     ContactPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    LoginFormComponent,
+    RegisterFormComponent
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthService
+    RESTService,
+    AuthService,
+    UserProvider
   ]
 })
 export class AppModule {}

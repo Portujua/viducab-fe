@@ -1,34 +1,99 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar *ngIf="!session.isActive()">
     <ion-title>
       Account
     </ion-title>
   </ion-navbar>
+
+  <ion-navbar no-border-bottom *ngIf="session.isActive()">
+    <ion-title>
+      Account
+    </ion-title>
+  </ion-navbar>
+
+  <ion-toolbar no-border-top *ngIf="session.isActive()">
+    <ion-segment [(ngModel)]="segment">
+      <ion-segment-button value="videos">
+        Videos
+      </ion-segment-button>
+      <ion-segment-button value="drive">
+        Drive
+      </ion-segment-button>
+      <ion-segment-button value="info">
+        Information
+      </ion-segment-button>
+      <ion-segment-button value="users">
+        Users
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
-<ion-content padding>
-  <div *ngIf="!session">
-    <ion-list>      
-      <ion-item>
-        <ion-label floating>Username</ion-label>
-        <ion-input type="text" [(ngModel)]="username"></ion-input>
-      </ion-item>
-    
-      <ion-item>
-        <ion-label floating>Password</ion-label>
-        <ion-input type="password"></ion-input>
-      </ion-item>    
-    </ion-list>
-    
-    <div padding>
-      <button ion-button color="primary" block (click)="login()">Sign In</button>
+<ion-content>
+  <!-- Not logged in -->
+  <div *ngIf="!session.isActive()">
+    <h3 class="flex align-items-center flex-wrap-wrap text-center margin-left">
+      You must <button class="margin-sm-lr" ion-button clear (click)="openLoginModal()">Log in</button> first or <button class="margin-sm-lr" ion-button (click)="openRegisterModal()">Register</button> if you don't have an account yet
+    </h3>
+  </div>
+  <!-- /Not logged in -->
+
+  <!-- User View -->
+  <div *ngIf="session.isActive()">
+    <div [ngSwitch]="segment">
+      <ion-list *ngSwitchCase="'videos'">
+        <ion-item *ngFor="let item of loremImages">
+          <ion-thumbnail item-start>
+            <img src="http://lorempixel.com/100/100/{{ item }}">
+          </ion-thumbnail>
+          <h1 class="bold">Lorem ipsum</h1>
+          <small>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi ultrices, nunc non dapibus placerat, ligula diam dignissim mi, id posuere lectus risus sed diam. Nam bibendum libero sit amet sagittis aliquam. Morbi rhoncus ante ornare, iaculis velit et, pharetra metus. Suspendisse facilisis vestibulum lorem, sit amet pharetra nisl bibendum sit amet.</small>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngSwitchCase="'drive'">
+        <ion-item *ngFor="let item of loremFiles">
+          <ion-thumbnail item-start>
+            <img src="http://www.icon2s.com/img256/256x256-black-white-android-video-file.png">
+          </ion-thumbnail>
+          <h2 class="bold">{{ item }}</h2>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngSwitchCase="'info'" padding>
+        <p>
+          <span class="bold">Username:</span> {{ session.nickname }}
+        </p>
+
+        <p>
+          <span class="bold">First Name:</span> {{ session.firstName }}
+        </p>
+
+        <p>
+          <span class="bold">Last Name:</span> {{ session.lastName }}
+        </p>
+
+        <p>
+          <span class="bold">Member since:</span> {{ session.createdAt | date:'dd/MMM/yyyy @ HH:mm a' }}
+        </p>
+
+        <button class="btn-drive" ion-button block color="drive">
+          <img class="margin-sm-right" src="https://lh6.ggpht.com/k7Z4J1IIXXJnC2NRnFfJNlkn7kZge4Zx-Yv5uqYf4222tx74wXDzW24OvOxlcpw0KcQ=w300" width="25" height="25"> 
+          Sync Drive
+        </button>
+      </ion-list>
+
+      <ion-list *ngSwitchCase="'users'">
+        <ion-item *ngFor="let item of allUsers; let o = odd;">
+          <ion-thumbnail item-start>
+            <img src="http://d22r54gnmuhwmk.cloudfront.net/app-assets/global/default_user_icon-7a95ec473c1c41f6d020d32c0504a0ef.jpg">
+          </ion-thumbnail>
+          <h2 class="bold">{{ item.nickname }} <small class="text-muted">{{ item.firstName }} {{ item.lastName }}</small></h2>
+          <button *ngIf="!o" ion-button clear>Subscribe</button>
+          <ion-badge *ngIf="o">Suscribed</ion-badge>
+        </ion-item>
+      </ion-list>
     </div>
   </div>
-
-  <div *ngIf="session">
-    <h1>
-      {{ session.login }} <small><button (click)="clear()" ion-button clear>Clear</button></small>
-    </h1>
-    <img [src]="session.avatar_url" [alt]="session.login">
-  </div>
+  <!-- /User View -->
 </ion-content>

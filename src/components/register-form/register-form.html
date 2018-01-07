@@ -1,0 +1,39 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Create New User
+    </ion-title>
+
+    <ion-buttons start>
+      <button type="button" ion-button clear (click)="dismiss()">
+        <span ion-text showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" color="dark" showWhen="android,windows,pc"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <form name="form" #form="ngForm">
+    <ion-list>
+      <ion-item>
+        <ion-label floating>Username</ion-label>
+        <ion-input type="text" name="nickname" ngModel required minlength="4"></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label floating>First Name</ion-label>
+        <ion-input type="text" name="firstName" ngModel required></ion-input>
+      </ion-item>
+  
+      <ion-item>
+        <ion-label floating>Last Name</ion-label>
+        <ion-input type="text" name="lastName" ngModel required></ion-input>
+      </ion-item>
+  
+      <button type="submit" class="margin-top" ion-button block [disabled]="form.invalid" (click)="create(form.form.value)">
+        Create
+      </button>
+    </ion-list>
+  </form>
+</ion-content>

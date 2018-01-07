@@ -1,0 +1,28 @@
+.toolbar-background, .tabber, .tab-button, .toolbar-content {
+  background-color: $brand-primary !important;
+  
+  &, *, * *, * * *, * * * * { 
+    color: $brand-primary-negative !important; 
+
+    &[aria-selected="true"] {
+      *, * *, * * *, * * * * {
+        color: $brand-secondary !important;
+      }
+    }
+  }
+}
+
+.toast-wrapper, .toast-message {
+  background-color: $brand-secondary !important;
+}
+
+.bar-buttons {
+  *, * *, * * *, * * * *, * * * * * {
+    color: #000 !important;
+  }
+}
+
+.segment-activated {
+  color: $brand-primary-negative !important;
+  border-color: $brand-secondary !important;
+}
