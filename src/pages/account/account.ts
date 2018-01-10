@@ -1,11 +1,11 @@
-import { Observable } from 'rxjs/Rx';
 import { Component } from '@angular/core';
-import { NavController, ModalController, LoadingController } from 'ionic-angular';
+import { NavController, ModalController, LoadingController, ToastController } from 'ionic-angular';
 import { AuthService } from '../../app/services/auth.service';
 import { RegisterFormComponent } from '../../components/register-form/register-form';
 import { LoginFormComponent } from '../../components/login-form/login-form';
 import * as _ from 'underscore/underscore';
 import { UserProvider } from '../../providers/user/user.provider';
+import { GoogleDriveProvider } from '../../providers/google-drive/google-drive';
 
 @Component({
   selector: 'page-account',
@@ -17,12 +17,10 @@ export class AccountPage {
   loremImages: string[] = ['abstract', 'animals', 'business', 'cats', 'city', 'food', 'nightlife', 'fashion', 'people', 'nature'];
   loremFiles: string[] = ['Birthday.mp4', 'Pool.mp4', 'Party.mp4', 'Party p2.mp4'];
   allUsers: any[];
+  subscribers: any[];
 
-  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public loadingCtrl: LoadingController, private Auth: AuthService, private userProvider: UserProvider) {
-    // Refresh the session
-    // Observable.interval(100).subscribe(() => {
-    //   this.session = this.Auth.getSession()
-    // })
+  constructor(public navCtrl: NavController, public modalCtrl: ModalController, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private Auth: AuthService, private userProvider: UserProvider, private googleDriveProvider: GoogleDriveProvider) {
+    //
   }
 
   openRegisterModal() {
@@ -35,6 +33,10 @@ export class AccountPage {
 
     modal.onDidDismiss(response => {
       this.session = this.Auth.getSession();
+      
+      if (!this.session.isActive()) {
+        return;
+      }
 
       let loading = this.loadingCtrl.create({
         content: 'Loading...'
@@ -51,11 +53,58 @@ export class AccountPage {
           }
         })
 
+        // We add the suscribed value
+        this.userProvider.getSubscriptions(this.session.id).subscribe(response => {
+          this.subscribers = response['data'];
+
+          _.each(this.allUsers, user => {
+            _.each(this.subscribers, subscriber => {
+              user.subscribed = user.id === subscriber.id;
+            })
+          })
+        })
+
         loading.dismiss();
       })
     })
 
     modal.present();
+  }
+
+  subscribe(user: any) {
+    let loading = this.loadingCtrl.create({
+      content: 'Loading...'
+    })
+
+    loading.present();
+
+    this.userProvider.subscribe(user.id).subscribe(response => {
+      this.toastCtrl.create({
+        message: `You subscribed to ${user.nickname} channel!`,
+        duration: 2500,
+        position: 'top'
+      }).present()
+
+      loading.dismiss();
+    })
+  }
+
+  unsubscribe(user: any) {
+    let loading = this.loadingCtrl.create({
+      content: 'Loading...'
+    })
+
+    loading.present();
+
+    this.userProvider.unsubscribe(user.id).subscribe(response => {
+      this.toastCtrl.create({
+        message: `You subscribed to ${user.nickname} channel!`,
+        duration: 2500,
+        position: 'top'
+      }).present()
+
+      loading.dismiss();
+    })
   }
 
 }

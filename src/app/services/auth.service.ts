@@ -11,9 +11,8 @@ export class AuthService {
     this.session = new Session({ });
   }
 
-  login(username?: string, password?: string) {
-    //return this.RESTFul.post('auth', { username, password });
-    return this.RESTFul.get('users')
+  login(nickname?: string, password?: string) {
+    return this.RESTFul.post('auth', { nickname, password });
   }
 
   logout() {
@@ -35,5 +34,6 @@ export class AuthService {
 
   setSession(session: any = null) {
     this.session = new Session(session);
+    console.log(this.session)
   }
 }

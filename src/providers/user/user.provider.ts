@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { RESTService } from '../../app/services/_rest.service';
+import { AuthService } from '../../app/services/auth.service';
 
 /*
   Generated class for the UserProvider provider.
@@ -10,7 +11,7 @@ import { RESTService } from '../../app/services/_rest.service';
 @Injectable()
 export class UserProvider {
 
-  constructor(private RESTful: RESTService) {
+  constructor(private RESTful: RESTService, private authService: AuthService) {
     //
   }
 
@@ -20,6 +21,36 @@ export class UserProvider {
 
   create(payload) {
     return this.RESTful.post('users', payload);
+  }
+
+  getVideos(userId: string) {
+    return this.RESTful.get(`users/${userId}/videos`)
+  }
+
+  getSubscribers(userId: string) {
+    return this.RESTful.get(`users/${userId}/subscribers`)
+  }
+
+  getSubscriptions(userId: string) {
+    return this.RESTful.get(`users/${userId}/subscriptions`)
+  }
+
+  subscribe(toUser: string) {
+    let payload = {
+      subscriber: this.authService.getSession().id,
+      owner: toUser
+    }
+
+    return this.RESTful.post('subscribe', payload)
+  }
+
+  unsubscribe(toUser: string) {
+    let payload = {
+      subscriber: this.authService.getSession().id,
+      owner: toUser
+    }
+
+    return this.RESTful.post('unsubscribe', payload)
   }
 
 }

@@ -22,13 +22,20 @@ export class RegisterFormComponent {
   create(data) {
     data = new User(data);
 
-    this.userProvider.create(data.postPayload()).subscribe(response => {
+    this.userProvider.create(data.postPayload())
+    .finally(() => {
+      this.dismiss()
+    })
+    .subscribe(response => {
       this.toastCtrl.create({
         message: 'User created successfully',
         duration: 2000
       }).present()
-
-      this.dismiss()
+    }, response => {
+      this.toastCtrl.create({
+        message: response['error']['message'][0],
+        duration: 2000
+      }).present()
     })
   }
 

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 
 import { ToastController, LoadingController, ViewController } from 'ionic-angular';
 import { AuthService } from '../../app/services/auth.service';
-import * as _ from 'underscore/underscore';
 
 /**
  * Generated class for the LoginFormComponent component.
@@ -17,7 +16,7 @@ import * as _ from 'underscore/underscore';
 export class LoginFormComponent {
   isBusy: boolean = false;
   username: string = 'portujua';
-  password: string = '1234';
+  password: string = '21115476';
 
   constructor(public toastCtrl: ToastController, public loadingCtrl: LoadingController, public viewCtrl: ViewController, private AuthService: AuthService) {
     //
@@ -37,31 +36,12 @@ export class LoginFormComponent {
         this.isBusy = false;
         loading.dismiss()
       }).subscribe(response => {
-        //this.AuthService.setSession(response['data']);
-        let session = null;
-
-        _.each(response['data']['content'], (user) => {
-          if (user.nickname === this.username) {
-            session = user;
-          }
-        })
-
-        if (!_.isNull(session)) {
-          this.AuthService.setSession(session);
-          this.dismiss(session);
-        }
-        else {
-          this.toastCtrl.create({
-            message: `Username or password incorrect`,
-            duration: 2500,
-            position: 'top'
-          }).present()
-        }
-
+        this.AuthService.setSession(response['data']);
         this.reset();
+        this.dismiss();
       }, response => {
         this.toastCtrl.create({
-          message: `Username or password incorrect`,
+          message: response['error']['message'][0],
           duration: 2500,
           position: 'top'
         }).present()

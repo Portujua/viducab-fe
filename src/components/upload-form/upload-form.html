@@ -1,0 +1,68 @@
+<ion-header>
+    <ion-toolbar>
+      <ion-title>
+        Create New User
+      </ion-title>
+  
+      <ion-buttons start>
+        <button type="button" ion-button clear (click)="dismiss()">
+          <span ion-text showWhen="ios">Cancel</span>
+          <ion-icon name="md-close" color="dark" showWhen="android,windows,pc"></ion-icon>
+        </button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  
+  <ion-content padding>
+    <form name="form" #form="ngForm">
+      <ion-list>
+        <ion-item>
+          <ion-label floating>Title</ion-label>
+          <ion-input type="text" name="title" ngModel required></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label floating>Description</ion-label>
+          <!-- <ion-input type="text" name="title" ngModel required></ion-input> -->
+          <ion-textarea name="description" ngModel required></ion-textarea>
+        </ion-item>
+
+        <ion-item *ngIf="allUsers">
+          <ion-label floating>Privacy</ion-label>
+          <ion-select [(ngModel)]="privacy" [ngModelOptions]="{standalone: true}">
+            <ion-option *ngFor="let item of privacies" value="{{ item }}">{{ item }}</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item *ngIf="privacy == 'Only selected users'">
+          <ion-list>
+            <ion-item *ngFor="let user of allUsers">
+              <input type="checkbox" [(ngModel)]="user.selected" [ngModelOptions]="{standalone: true}"> {{ user.nickname }}
+            </ion-item>
+          </ion-list>
+        </ion-item>
+
+        <ion-item class="margin-top" *ngIf="selectedFile">
+          <h1 class="bold">Selected file:</h1>
+          <h2>
+            <span class="bold">Name:</span> {{ selectedFile.name }}
+          </h2>
+          <h2>
+            <span class="bold">Duration:</span> {{ selectedFile.duration }} seconds
+          </h2>
+          <h2>
+            <span class="bold">Size:</span> {{ selectedFile.sizeBytes }} Bytes
+          </h2>
+        </ion-item>
+
+        <button class="btn-drive margin-top" ion-button block color="drive" (click)="selectFile()">
+          <img class="margin-sm-right" src="https://lh6.ggpht.com/k7Z4J1IIXXJnC2NRnFfJNlkn7kZge4Zx-Yv5uqYf4222tx74wXDzW24OvOxlcpw0KcQ=w300" width="25" height="25"> 
+          {{ selectedFile ? 'Change file' : 'Select file' }}
+        </button>
+    
+        <button type="submit" class="margin-top" ion-button block [disabled]="form.invalid || !selectedFile || !privacy" (click)="create(form.form.value)">
+          Create
+        </button>
+      </ion-list>
+    </form>
+  </ion-content>

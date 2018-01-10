@@ -19,6 +19,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { RESTService } from './services/_rest.service'
 import { AuthService } from './services/auth.service';
 import { UserProvider } from '../providers/user/user.provider';
+import { GoogleDriveProvider } from '../providers/google-drive/google-drive';
+import { VideoListComponent } from '../components/video-list/video-list';
+import { VideoProvider } from '../providers/video/video';
+import { UploadFormComponent } from '../components/upload-form/upload-form';
 
 @NgModule({
   declarations: [
@@ -28,7 +32,9 @@ import { UserProvider } from '../providers/user/user.provider';
     HomePage,
     TabsPage,
     LoginFormComponent,
-    RegisterFormComponent
+    RegisterFormComponent,
+    VideoListComponent,
+    UploadFormComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +49,9 @@ import { UserProvider } from '../providers/user/user.provider';
     HomePage,
     TabsPage,
     LoginFormComponent,
-    RegisterFormComponent
+    RegisterFormComponent,
+    VideoListComponent,
+    UploadFormComponent
   ],
   providers: [
     StatusBar,
@@ -51,7 +59,9 @@ import { UserProvider } from '../providers/user/user.provider';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     RESTService,
     AuthService,
-    UserProvider
+    UserProvider,
+    GoogleDriveProvider,
+    VideoProvider
   ]
 })
 export class AppModule {}

@@ -1,0 +1,22 @@
+<div class="padding-lg">
+  <button ion-button block (click)="openUploadModal()">Upload</button>
+</div>
+
+<ion-list>
+  <ion-item *ngFor="let item of data">
+    <ion-thumbnail item-start>
+      <img src="https://lh3.googleusercontent.com/d/{{ item.googleId }}">
+    </ion-thumbnail>
+    <h1 class="bold">{{ item.title }}</h1>
+    <small>{{ item.description }}</small>
+  </ion-item>
+
+  <ion-item *ngIf="!data.length">
+    <h2 class="text-muted text-center">
+      There are no videos available.
+      <br>
+      <br>
+      <button ion-button *ngIf="self" (click)="openUploadModal()">Upload</button>
+    </h2>
+  </ion-item>
+</ion-list>
