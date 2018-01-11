@@ -1,5 +1,5 @@
 export class API {
-  private static environment = 'local';
+  private static environment = 'eduardo';
 
   public static profiles = {
     local: {
@@ -14,6 +14,13 @@ export class API {
       port     : '8080',
       protocol : 'http',
       host     : '10.0.1.22',
+      prefix   : 'api',
+    },
+    eduardo: {
+      version  : '',
+      port     : '8080',
+      protocol : 'http',
+      host     : '186.93.33.252',
       prefix   : 'api',
     },
   };
