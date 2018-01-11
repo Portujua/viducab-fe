@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 
 import { ToastController, LoadingController, ViewController } from 'ionic-angular';
 import { AuthService } from '../../app/services/auth.service';
-import { VideoProvider } from '../../providers/video/video';
 
 /**
  * Generated class for the LoginFormComponent component.
@@ -19,7 +18,7 @@ export class LoginFormComponent {
   username: string = 'portujua';
   password: string = '21115476';
 
-  constructor(public toastCtrl: ToastController, public loadingCtrl: LoadingController, public viewCtrl: ViewController, private AuthService: AuthService, private videoProvider: VideoProvider) {
+  constructor(public toastCtrl: ToastController, public loadingCtrl: LoadingController, public viewCtrl: ViewController, private AuthService: AuthService) {
     //
   }
 
