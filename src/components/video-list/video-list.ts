@@ -72,4 +72,8 @@ export class VideoListComponent implements OnInit {
     modal.present();
   }
 
+  getPrivacyStr(privacyType) {
+    return privacyType === 'ONLYSOME' ? 'ONLY SOME' : privacyType;
+  }
+
 }

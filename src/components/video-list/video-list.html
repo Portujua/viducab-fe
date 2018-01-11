@@ -7,8 +7,11 @@
     <ion-thumbnail item-start>
       <img src="https://lh3.googleusercontent.com/d/{{ item.googleId }}">
     </ion-thumbnail>
-    <h1 class="bold">{{ item.title }}</h1>
-    <small>{{ item.description }}</small>
+    <h2 class="bold">
+      {{ item.title }}
+    </h2>
+    <p><small>{{ item.description }}</small></p>
+    <ion-badge *ngIf="self">{{ getPrivacyStr(item.privacyType) }}</ion-badge>
   </ion-item>
 
   <ion-item *ngIf="!data.length">
