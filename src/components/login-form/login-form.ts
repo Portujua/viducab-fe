@@ -16,8 +16,8 @@ import { VideoProvider } from '../../providers/video/video';
 })
 export class LoginFormComponent {
   isBusy: boolean = false;
-  username: string = 'portujua';
-  password: string = '21115476';
+  username: string = '';
+  password: string = '';
 
   constructor(public toastCtrl: ToastController, public loadingCtrl: LoadingController, public viewCtrl: ViewController, private AuthService: AuthService) {
     //
