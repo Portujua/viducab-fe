@@ -60,9 +60,15 @@ export class AccountPage {
           this.subscriptions = response['data'];
 
           _.each(this.allUsers, user => {
+            let isPresent = false;
+
             _.each(this.subscriptions, subscriber => {
-              user.subscribed = user.id === subscriber.id;
+              if (!isPresent) {
+                isPresent = user.id === subscriber.id;
+              }
             })
+
+            user.subscribed = isPresent;
           })
 
           this.userProvider.getSubscribers(this.session.id).subscribe(response => {
