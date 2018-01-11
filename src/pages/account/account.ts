@@ -6,6 +6,7 @@ import { LoginFormComponent } from '../../components/login-form/login-form';
 import * as _ from 'underscore/underscore';
 import { UserProvider } from '../../providers/user/user.provider';
 import { GoogleDriveProvider } from '../../providers/google-drive/google-drive';
+import { ChangePasswordComponent } from '../../components/change-password/change-password';
 
 @Component({
   selector: 'page-account',
@@ -17,6 +18,7 @@ export class AccountPage {
   loremImages: string[] = ['abstract', 'animals', 'business', 'cats', 'city', 'food', 'nightlife', 'fashion', 'people', 'nature'];
   loremFiles: string[] = ['Birthday.mp4', 'Pool.mp4', 'Party.mp4', 'Party p2.mp4'];
   allUsers: any[];
+  subscriptions: any[];
   subscribers: any[];
 
   constructor(public navCtrl: NavController, public modalCtrl: ModalController, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private Auth: AuthService, private userProvider: UserProvider, private googleDriveProvider: GoogleDriveProvider) {
@@ -55,16 +57,19 @@ export class AccountPage {
 
         // We add the suscribed value
         this.userProvider.getSubscriptions(this.session.id).subscribe(response => {
-          this.subscribers = response['data'];
+          this.subscriptions = response['data'];
 
           _.each(this.allUsers, user => {
-            _.each(this.subscribers, subscriber => {
+            _.each(this.subscriptions, subscriber => {
               user.subscribed = user.id === subscriber.id;
             })
           })
-        })
 
-        loading.dismiss();
+          this.userProvider.getSubscribers(this.session.id).subscribe(response => {
+            this.subscribers = response['data']
+            loading.dismiss();
+          })
+        })
       })
     })
 
@@ -78,7 +83,8 @@ export class AccountPage {
 
     loading.present();
 
-    this.userProvider.subscribe(user.id).subscribe(response => {
+    this.userProvider.subscribe(user).subscribe(response => {
+      user.subscribed = true;
       this.toastCtrl.create({
         message: `You subscribed to ${user.nickname} channel!`,
         duration: 2500,
@@ -96,15 +102,21 @@ export class AccountPage {
 
     loading.present();
 
-    this.userProvider.unsubscribe(user.id).subscribe(response => {
+    this.userProvider.unsubscribe(user).subscribe(response => {
+      user.subscribed = false;
       this.toastCtrl.create({
-        message: `You subscribed to ${user.nickname} channel!`,
+        message: `You unsubscribed to ${user.nickname} channel!`,
         duration: 2500,
         position: 'top'
       }).present()
 
       loading.dismiss();
     })
+  }
+
+  openChangePasswordModal() {
+    let modal = this.modalCtrl.create(ChangePasswordComponent, { user: this.session });
+    modal.present();
   }
 
 }

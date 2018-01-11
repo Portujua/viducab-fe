@@ -23,7 +23,8 @@ export class AuthService {
     loading.present()
 
     setTimeout(() => {
-      this.setSession(new Session({ }))
+      //this.setSession(new Session({ }))
+      window.location.reload()
       loading.dismiss();
     }, 1000)
   }
@@ -34,6 +35,5 @@ export class AuthService {
 
   setSession(session: any = null) {
     this.session = new Session(session);
-    console.log(this.session)
   }
 }

@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      {{ data.title }}
+    </ion-title>
+
+    <ion-buttons start>
+      <button type="button" ion-button clear (click)="dismiss()">
+        <span ion-text showWhen="ios">Cancel</span>
+        <ion-icon name="md-close" color="dark" showWhen="android,windows,pc"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <iframe [src]="videoURL()" frameborder="0"></iframe>
+
+  <h1 class="padding-sm-top padding-sm-lr">
+    {{ data.title }}
+  </h1>
+  <p class="padding-sm">
+    {{ data.description }}
+  </p>
+  <p class="padding-sm">
+    <span class="bold">Duration:</span> {{ data.duration }} seconds
+  </p>
+</ion-content>

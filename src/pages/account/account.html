@@ -1,26 +1,26 @@
 <ion-header>
-  <ion-navbar *ngIf="!session.isActive()">
+  <ion-navbar no-border-bottom>
     <ion-title>
       Account
     </ion-title>
   </ion-navbar>
 
-  <ion-navbar no-border-bottom *ngIf="session.isActive()">
-    <ion-title>
-      Account
-    </ion-title>
-  </ion-navbar>
-
-  <ion-toolbar no-border-top *ngIf="session.isActive()">
+  <ion-toolbar no-border-top>
     <ion-segment [(ngModel)]="segment">
-      <ion-segment-button value="videos">
+      <ion-segment-button value="videos" [hidden]="session.isActive()">
+        Login
+      </ion-segment-button>
+      <ion-segment-button value="videos" [hidden]="!session.isActive()">
         Videos
       </ion-segment-button>
-      <ion-segment-button value="info">
+      <ion-segment-button value="info" [hidden]="!session.isActive()">
         Information
       </ion-segment-button>
-      <ion-segment-button value="suscribers">
-        Suscribers
+      <ion-segment-button value="subscriptions" [hidden]="!session.isActive()">
+        Subscriptions
+      </ion-segment-button>
+      <ion-segment-button value="subscribers" [hidden]="!session.isActive()">
+        Subscribers
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
@@ -28,7 +28,7 @@
 
 <ion-content>
   <!-- Not logged in -->
-  <div *ngIf="!session.isActive()" padding>
+  <div *ngIf="!session.isActive()" class="padding-right padding-top">
     <button class="margin-sm-lr" ion-button (click)="openRegisterModal()" block>Register</button>
     <br>
     <button class="margin-sm-lr" ion-button clear (click)="openLoginModal()" block>Log in</button>
@@ -59,20 +59,29 @@
           <span class="bold">Member since:</span> {{ session.createdAt | date:'dd/MMM/yyyy @ HH:mm a' }}
         </p>
 
-        <!-- <button class="btn-drive" ion-button block color="drive">
-          <img class="margin-sm-right" src="https://lh6.ggpht.com/k7Z4J1IIXXJnC2NRnFfJNlkn7kZge4Zx-Yv5uqYf4222tx74wXDzW24OvOxlcpw0KcQ=w300" width="25" height="25"> 
-          Sync Drive
-        </button> -->
+        <button ion-button block (click)="openChangePasswordModal()">
+          Change password
+        </button>
       </ion-list>
 
-      <ion-list *ngSwitchCase="'suscribers'">
-        <ion-item *ngFor="let item of suscribers">
+      <ion-list *ngSwitchCase="'subscriptions'">
+        <ion-item *ngFor="let item of allUsers">
           <ion-thumbnail item-start>
             <img src="http://d22r54gnmuhwmk.cloudfront.net/app-assets/global/default_user_icon-7a95ec473c1c41f6d020d32c0504a0ef.jpg">
           </ion-thumbnail>
           <h2 class="bold">{{ item.nickname }} <small class="text-muted">{{ item.firstName }} {{ item.lastName }}</small></h2>
-          <button *ngIf="!item.subscribed" ion-button clear (click="subscribe(item)">Subscribe</button>
-          <ion-badge *ngIf="item.subscribed" (click)="unsubscribe(item)">Suscribed</ion-badge>
+          <button *ngIf="!item.subscribed" ion-button clear (click)="subscribe(item)">Subscribe</button>
+          <ion-badge *ngIf="item.subscribed">Suscribed</ion-badge>
+          <button *ngIf="item.subscribed" ion-button clear (click)="unsubscribe(item)" clear>Unsubscribe</button>
+        </ion-item>
+      </ion-list>
+
+      <ion-list *ngSwitchCase="'subscribers'">
+        <ion-item *ngFor="let item of subscribers">
+          <ion-thumbnail item-start>
+            <img src="http://d22r54gnmuhwmk.cloudfront.net/app-assets/global/default_user_icon-7a95ec473c1c41f6d020d32c0504a0ef.jpg">
+          </ion-thumbnail>
+          <h2 class="bold">{{ item.nickname }} <small class="text-muted">{{ item.firstName }} {{ item.lastName }}</small></h2>
         </ion-item>
       </ion-list>
     </div>

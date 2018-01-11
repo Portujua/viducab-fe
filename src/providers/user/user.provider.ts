@@ -23,6 +23,10 @@ export class UserProvider {
     return this.RESTful.post('users', payload);
   }
 
+  update(payload) {
+    return this.RESTful.put('users', payload)
+  }
+
   getVideos(userId: string) {
     return this.RESTful.get(`users/${userId}/videos`)
   }
@@ -37,7 +41,7 @@ export class UserProvider {
 
   subscribe(toUser: string) {
     let payload = {
-      subscriber: this.authService.getSession().id,
+      subscriber: this.authService.getSession(),
       owner: toUser
     }
 
@@ -46,7 +50,7 @@ export class UserProvider {
 
   unsubscribe(toUser: string) {
     let payload = {
-      subscriber: this.authService.getSession().id,
+      subscriber: this.authService.getSession(),
       owner: toUser
     }
 

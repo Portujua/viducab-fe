@@ -21,8 +21,10 @@ import { AuthService } from './services/auth.service';
 import { UserProvider } from '../providers/user/user.provider';
 import { GoogleDriveProvider } from '../providers/google-drive/google-drive';
 import { VideoListComponent } from '../components/video-list/video-list';
+import { VideoViewComponent } from '../components/video-view/video-view';
 import { VideoProvider } from '../providers/video/video';
 import { UploadFormComponent } from '../components/upload-form/upload-form';
+import { ChangePasswordComponent } from '../components/change-password/change-password';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import { UploadFormComponent } from '../components/upload-form/upload-form';
     LoginFormComponent,
     RegisterFormComponent,
     VideoListComponent,
-    UploadFormComponent
+    UploadFormComponent,
+    VideoViewComponent,
+    ChangePasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +55,9 @@ import { UploadFormComponent } from '../components/upload-form/upload-form';
     LoginFormComponent,
     RegisterFormComponent,
     VideoListComponent,
-    UploadFormComponent
+    UploadFormComponent,
+    VideoViewComponent,
+    ChangePasswordComponent
   ],
   providers: [
     StatusBar,

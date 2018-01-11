@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { ToastController, LoadingController, ViewController } from 'ionic-angular';
 import { AuthService } from '../../app/services/auth.service';
+import { VideoProvider } from '../../providers/video/video';
 
 /**
  * Generated class for the LoginFormComponent component.
@@ -18,7 +19,7 @@ export class LoginFormComponent {
   username: string = 'portujua';
   password: string = '21115476';
 
-  constructor(public toastCtrl: ToastController, public loadingCtrl: LoadingController, public viewCtrl: ViewController, private AuthService: AuthService) {
+  constructor(public toastCtrl: ToastController, public loadingCtrl: LoadingController, public viewCtrl: ViewController, private AuthService: AuthService, private videoProvider: VideoProvider) {
     //
   }
 
@@ -37,6 +38,7 @@ export class LoginFormComponent {
         loading.dismiss()
       }).subscribe(response => {
         this.AuthService.setSession(response['data']);
+        VideoProvider.shouldReload = true;
         this.reset();
         this.dismiss();
       }, response => {

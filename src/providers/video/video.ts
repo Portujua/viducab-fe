@@ -9,6 +9,7 @@ import { RESTService } from '../../app/services/_rest.service';
 */
 @Injectable()
 export class VideoProvider {
+  public static shouldReload: boolean = false;
 
   constructor(public RESTful: RESTService) {
     //

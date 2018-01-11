@@ -1,9 +1,9 @@
-<div class="padding-lg">
+<div class="padding-lg" *ngIf="self && data.length">
   <button ion-button block (click)="openUploadModal()">Upload</button>
 </div>
 
 <ion-list>
-  <ion-item *ngFor="let item of data">
+  <ion-item *ngFor="let item of data" (click)="openViewModal(item)">
     <ion-thumbnail item-start>
       <img src="https://lh3.googleusercontent.com/d/{{ item.googleId }}">
     </ion-thumbnail>

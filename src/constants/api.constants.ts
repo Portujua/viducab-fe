@@ -1,5 +1,5 @@
 export class API {
-  private static environment = 'qa';
+  private static environment = 'local';
 
   public static profiles = {
     local: {

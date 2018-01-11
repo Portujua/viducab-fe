@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
-import { ViewController, ToastController } from 'ionic-angular';
+import { ViewController, LoadingController, ToastController, NavParams } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user.provider';
+import { VideoProvider } from '../../providers/video/video';
 import { GoogleDriveProvider } from '../../providers/google-drive/google-drive';
+import { AuthService } from '../../app/services/auth.service';
+import * as _ from 'underscore/underscore';
 
 /**
  * Generated class for the UploadFormComponent component.
@@ -16,9 +19,23 @@ import { GoogleDriveProvider } from '../../providers/google-drive/google-drive';
 export class UploadFormComponent {
   selectedFile: any;
   allUsers: any;
-  privacies: string[] = ['Public', 'Private', 'Only selected users'];
+  privacies: any[] = [
+    {
+      name: 'Public',
+      value: 'PUBLIC'
+    },
+    { 
+      name: 'Private',
+      value: 'PRIVATE'
+    },
+    { 
+      name: 'Only selected users',
+      value: 'ONLYSOME'
+    }
+  ];
+  privacy: string;
 
-  constructor(public viewCtrl: ViewController, public toastCtrl: ToastController, private userProvider: UserProvider, private googleDriveProvider: GoogleDriveProvider) {
+  constructor(public viewCtrl: ViewController, public toastCtrl: ToastController, private userProvider: UserProvider, private googleDriveProvider: GoogleDriveProvider, private videoProvider: VideoProvider, public loadingCtrl: LoadingController, private authService: AuthService, public navParams: NavParams) {
     this.userProvider.list().subscribe(response => {
       this.allUsers = response['data']['content'];
     })
@@ -33,11 +50,49 @@ export class UploadFormComponent {
   }
 
   create(data) {
-    let payload = data;
-    payload.googleId = this.selectedFile.id;
+    let payload = {
+      users: [],
+      video: data
+    }
 
-    console.log(payload)
-    //data = new User(data);
+    payload.video.owner = this.navParams.get('user') || this.authService.getSession();
+    payload.video.googleId = this.selectedFile.id;
+    payload.video.duration = this.selectedFile.duration;
+    payload.video.link = this.selectedFile.id;
+    payload.video.privacyType = this.privacy;
+
+    if (payload.video.privacyType === 'ONLYSOME') {
+      _.each(this.allUsers, user => {
+        if (user.selected) {
+          payload.users.push(user)
+        }
+      })
+    }
+
+    let loading = this.loadingCtrl.create({
+      content: 'Loading'
+    })
+
+    loading.present();
+
+    this.videoProvider.create(payload).subscribe(response => {
+      this.toastCtrl.create({
+        message: 'Video has been uploaded successfully',
+        duration: 2500,
+        position: 'top'
+      }).present()
+
+      VideoProvider.shouldReload = true;
+      loading.dismiss();
+      this.dismiss(true)
+    }, response => {
+      loading.dismiss();
+      this.toastCtrl.create({
+        message: response['error']['message'][0],
+        duration: 2500,
+        position: 'top'
+      }).present()
+    })
 
     // this.userProvider.create(data.postPayload())
     // .finally(() => {

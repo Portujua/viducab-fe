@@ -1,3 +1,15 @@
 upload-form {
 
 }
+
+.picker-dialog {
+  left: 0px !important;
+  top: 0px !important;
+  height: 100vh !important;
+  width: 100vw !important;
+
+  .picker-dialog-content {
+    height: 99vh !important;
+    width: 99vw !important;
+  }
+}

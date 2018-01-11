@@ -22,4 +22,11 @@ export class User extends BaseFactory {
       lastName: this.lastName
     }
   }
+
+  changePasswordPayload() {
+    return {
+      id: this.id,
+      password: this.password
+    }
+  }
 } 
