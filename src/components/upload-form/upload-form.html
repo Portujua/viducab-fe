@@ -34,13 +34,14 @@
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="privacy == 'ONLYSOME'">
-        <ion-list>
-          <ion-item *ngFor="let user of allUsers">
-            <input type="checkbox" [(ngModel)]="user.selected" [ngModelOptions]="{standalone: true}"> {{ user.nickname }}
-          </ion-item>
-        </ion-list>
-      </ion-item>
+      <!-- <ion-item *ngIf="privacy == 'ONLYSOME'"> -->
+      <ion-list *ngIf="privacy == 'ONLYSOME'">
+        <ion-item *ngFor="let user of allUsers">
+          <ion-label>{{ user.nickname }}</ion-label>
+          <ion-checkbox [checked]="user.selected" [(ngModel)]="user.selected" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+        </ion-item>
+      </ion-list>
+      <!-- </ion-item> -->
 
       <ion-item class="margin-top" *ngIf="selectedFile">
         <h1 class="bold">Selected file:</h1>
