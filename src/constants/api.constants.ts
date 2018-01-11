@@ -20,7 +20,7 @@ export class API {
       version  : '',
       port     : '8080',
       protocol : 'http',
-      host     : '186.93.33.252',
+      host     : '201.208.207.67',
       prefix   : 'api',
     },
   };
