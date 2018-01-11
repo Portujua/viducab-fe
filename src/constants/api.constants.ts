@@ -1,5 +1,5 @@
 export class API {
-  private static environment = 'eduardo';
+  private static environment = 'local';
 
   public static profiles = {
     local: {
@@ -7,21 +7,21 @@ export class API {
       port     : '8080',
       protocol : 'http',
       host     : 'localhost',
-      prefix   : 'api',
+      prefix   : 'vid-ucab',
     },
     qa: {
       version  : '',
       port     : '8080',
       protocol : 'http',
       host     : '10.0.1.22',
-      prefix   : 'api',
+      prefix   : 'vid-ucab',
     },
     eduardo: {
       version  : '',
       port     : '8080',
       protocol : 'http',
       host     : '201.208.207.67',
-      prefix   : 'api',
+      prefix   : 'vid-ucab',
     },
   };
 
