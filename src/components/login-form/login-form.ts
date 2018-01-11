@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { ToastController, LoadingController, ViewController } from 'ionic-angular';
 import { AuthService } from '../../app/services/auth.service';
+import { VideoProvider } from '../../providers/video/video';
 
 /**
  * Generated class for the LoginFormComponent component.

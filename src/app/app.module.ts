@@ -4,7 +4,6 @@ import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
 import { AccountPage } from '../pages/account/account';
-import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 
@@ -30,7 +29,6 @@ import { ChangePasswordComponent } from '../components/change-password/change-pa
   declarations: [
     MyApp,
     AccountPage,
-    ContactPage,
     HomePage,
     TabsPage,
     LoginFormComponent,
@@ -49,7 +47,6 @@ import { ChangePasswordComponent } from '../components/change-password/change-pa
   entryComponents: [
     MyApp,
     AccountPage,
-    ContactPage,
     HomePage,
     TabsPage,
     LoginFormComponent,
