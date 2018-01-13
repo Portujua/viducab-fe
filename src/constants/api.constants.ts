@@ -1,5 +1,5 @@
 export class API {
-  private static environment = 'local';
+  private static environment = 'qa';
 
   public static profiles = {
     local: {
@@ -13,14 +13,7 @@ export class API {
       version  : '',
       port     : '8080',
       protocol : 'http',
-      host     : '10.0.1.22',
-      prefix   : 'vid-ucab',
-    },
-    eduardo: {
-      version  : '',
-      port     : '8080',
-      protocol : 'http',
-      host     : '201.208.207.67',
+      host     : 'viducab.sytes.net',
       prefix   : 'vid-ucab',
     },
   };
