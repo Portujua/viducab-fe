@@ -33,7 +33,34 @@ export class UploadFormComponent {
       value: 'ONLYSOME'
     }
   ];
+  categories: any[] = [
+    {
+      name: 'Music',
+      value: 'MUSIC'
+    },
+    {
+      name: 'Entertainment',
+      value: 'ENTERTAINMENT'
+    },
+    {
+      name: 'Comedy',
+      value: 'COMEDY'
+    },
+    {
+      name: 'Games',
+      value: 'GAMES'
+    },
+    {
+      name: 'Sports',
+      value: 'SPORTS'
+    },
+    {
+      name: 'Science',
+      value: 'SCIENCE'
+    },
+  ];
   privacy: string;
+  category: string;
 
   constructor(public viewCtrl: ViewController, public toastCtrl: ToastController, private userProvider: UserProvider, private googleDriveProvider: GoogleDriveProvider, private videoProvider: VideoProvider, public loadingCtrl: LoadingController, private authService: AuthService, public navParams: NavParams) {
     this.userProvider.list().subscribe(response => {
@@ -60,6 +87,7 @@ export class UploadFormComponent {
     payload.video.duration = this.selectedFile.duration;
     payload.video.link = this.selectedFile.id;
     payload.video.privacyType = this.privacy;
+    payload.video.category = this.category;
 
     if (payload.video.privacyType === 'ONLYSOME') {
       _.each(this.allUsers, user => {

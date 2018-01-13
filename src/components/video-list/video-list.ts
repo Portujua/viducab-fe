@@ -19,9 +19,11 @@ import { Observable } from 'rxjs/Rx';
 })
 export class VideoListComponent implements OnInit {
   data: any[] = [];
+  isLoading: boolean = false;
   @Input('ownerId') ownerId: string = '';
   @Input('userId') userId: string = '';
   @Input('self') self: any = null;
+  @Input('refresh') canRefresh: boolean = false;
 
   constructor(private userProvider: UserProvider, private videoProvider: VideoProvider, public modalCtrl: ModalController, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private authService: AuthService) {
     //
@@ -34,7 +36,6 @@ export class VideoListComponent implements OnInit {
           VideoProvider.shouldReload = false;
           this.userId = this.authService.getSession().id;
           this.load();
-          console.log('Reloading video list for user id:', this.authService.getSession().id)
         }
       });
     }
@@ -43,16 +44,36 @@ export class VideoListComponent implements OnInit {
   }
 
   load() {
+    let loading = this.loadingCtrl.create({
+      content: 'Loading'
+    })
+
+    loading.present();
+
+    let obs = null;
+    this.isLoading = true;
+
     if (this.self) {
-      this.userProvider.getVideos(this.self.id).subscribe(response => {
-        this.data = response['data']
-      })
+      obs = this.userProvider.getVideos(this.self.id)
     }
     else {
-      this.videoProvider.list({ ownerId: this.ownerId, userId: this.userId }).subscribe(response => {
-        this.data = response['data']
-      })
+      obs = this.videoProvider.list({ ownerId: this.ownerId, userId: this.userId })
     }
+
+    obs.subscribe(response => {
+      this.data = response['data']
+      loading.dismiss()
+      this.isLoading = false;
+    }, response => {
+      this.isLoading = false;
+      this.toastCtrl.create({
+        message: 'Couldn\'t get the feed.',
+        duration: 2500,
+        position: 'top'
+      }).present()
+
+      loading.dismiss()
+    })
   }
 
   openUploadModal() {
@@ -74,6 +95,24 @@ export class VideoListComponent implements OnInit {
 
   getPrivacyStr(privacyType) {
     return privacyType === 'ONLYSOME' ? 'ONLY SOME' : privacyType;
+  }
+
+  getDurationStr(_seconds) {
+    let minutes = 0;
+    let seconds = _seconds;
+
+    while (seconds >= 60) {
+      seconds -= 60;
+      minutes++;
+    }
+
+    return `${minutes.toString().length === 1 ? '0' : ''}${minutes}:${seconds.toString().length === 1 ? '0' : ''}${seconds}`
+  }
+
+  processPan(e) {
+    if (e.additionalEvent === 'pandown' && this.canRefresh && !this.isLoading) {
+      this.load()
+    }
   }
 
 }

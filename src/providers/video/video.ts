@@ -23,4 +23,12 @@ export class VideoProvider {
     return this.RESTful.post('videos', payload)
   }
 
+  comment(videoId, payload) {
+    return this.RESTful.post(`videos/${videoId}/comments`, payload)
+  }
+
+  listComments(videoId) {
+    return this.RESTful.get(`videos/${videoId}/comments`)
+  }
+
 }

@@ -14,15 +14,56 @@
 </ion-header>
 
 <ion-content>
-  <iframe [src]="videoURL()" frameborder="0"></iframe>
+  <iframe [src]="realVideoURL" frameborder="0"></iframe>
 
-  <h1 class="padding-sm-top padding-sm-lr">
-    {{ data.title }}
-  </h1>
-  <p class="padding-sm">
-    {{ data.description }}
-  </p>
-  <p class="padding-sm">
-    <span class="bold">Duration:</span> {{ data.duration }} seconds
-  </p>
+  <div class="padding-sm-lr">
+    <h2 class="padding-sm-top hug-top hug-bottom">
+      {{ data.title }}
+    </h2>
+    <p class="padding-sm-tb hug-top">
+      {{ getDurationStr(data.duration) }}
+    </p>
+
+    <hr>
+
+    <div class="hug-top block">
+      <img class="pull-left margin-sm-right" src="http://d22r54gnmuhwmk.cloudfront.net/app-assets/global/default_user_icon-7a95ec473c1c41f6d020d32c0504a0ef.jpg" width="40" height="40">
+      <p>
+        <span class="bold font-size-large">{{ data.owner.nickname }}</span><br>
+        <span class="text-muted font-size-smaller">Uploaded {{ data.createdAt | date:'MMM dd yyyy' }} at {{ data.createdAt | date:'hh:mm a' }}</span>
+      </p>
+    </div>
+
+    <div class="padding-sm-tb block">
+      {{ data.description }}
+    </div>
+
+    <p class="text-center">
+      <span class="text-muted bold">Category</span> <span class="text-muted">{{ data.category }}</span>
+    </p>
+
+    <hr>
+
+    <ion-list>
+      <h1 class="font-size-large">Comments</h1>
+      <ion-item *ngFor="let item of comments">
+        <ion-thumbnail item-start>
+          <img src="http://d22r54gnmuhwmk.cloudfront.net/app-assets/global/default_user_icon-7a95ec473c1c41f6d020d32c0504a0ef.jpg">
+        </ion-thumbnail>
+        <h2 class="bold">
+          {{ item.subscriber.nickname }}
+        </h2>
+        <p><small>{{ item.text }}</small></p>
+      </ion-item>
+
+      <div class="flex flex-direction-column" *ngIf="canComment()">
+        <ion-textarea class="bordered margin-sm-tb padding-sm" placeholder="Enter your comment" [(ngModel)]="newComment"></ion-textarea>
+        <button ion-button block (click)="comment()">
+          Send comment <i class="fa fa-fw fa-paper-plane margin-sm-left"></i>
+        </button>
+      </div>
+
+      <button *ngIf="!canComment()" class="bordered-top" ion-button clear block>Log in to comment this video</button>
+    </ion-list>
+  </div>
 </ion-content>

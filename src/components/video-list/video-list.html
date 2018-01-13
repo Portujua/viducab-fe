@@ -2,10 +2,11 @@
   <button ion-button block (click)="openUploadModal()">Upload</button>
 </div>
 
-<ion-list>
+<ion-list (pan)="processPan($event)">
   <ion-item *ngFor="let item of data" (click)="openViewModal(item)">
     <ion-thumbnail item-start>
       <img src="https://lh3.googleusercontent.com/d/{{ item.googleId }}">
+      <span class="duration">{{ getDurationStr(item.duration) }}</span>
     </ion-thumbnail>
     <h2 class="bold">
       {{ item.title }}

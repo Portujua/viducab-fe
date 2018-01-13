@@ -27,6 +27,13 @@
         <ion-textarea name="description" ngModel required></ion-textarea>
       </ion-item>
 
+      <ion-item>
+        <ion-label floating>Category</ion-label>
+        <ion-select [(ngModel)]="category" [ngModelOptions]="{standalone: true}">
+          <ion-option *ngFor="let item of categories" value="{{ item.value }}">{{ item.name }}</ion-option>
+        </ion-select>
+      </ion-item>
+
       <ion-item *ngIf="allUsers">
         <ion-label floating>Privacy</ion-label>
         <ion-select [(ngModel)]="privacy" [ngModelOptions]="{standalone: true}">
