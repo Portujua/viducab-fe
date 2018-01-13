@@ -2,25 +2,31 @@
   <button ion-button block (click)="openUploadModal()">Upload</button>
 </div>
 
-<ion-list (pan)="processPan($event)">
-  <ion-item *ngFor="let item of data" (click)="openViewModal(item)">
-    <ion-thumbnail item-start>
-      <img src="https://lh3.googleusercontent.com/d/{{ item.googleId }}">
-      <span class="duration">{{ getDurationStr(item.duration) }}</span>
-    </ion-thumbnail>
-    <h2 class="bold">
-      {{ item.title }}
-    </h2>
-    <p><small>{{ item.description }}</small></p>
-    <ion-badge *ngIf="self">{{ getPrivacyStr(item.privacyType) }}</ion-badge>
-  </ion-item>
+<ion-content>
+  <ion-refresher (ionRefresh)="refresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-  <ion-item *ngIf="!data.length">
-    <h2 class="text-muted text-center">
-      There are no videos available.
-      <br>
-      <br>
-      <button ion-button *ngIf="self" (click)="openUploadModal()">Upload</button>
-    </h2>
-  </ion-item>
-</ion-list>
+  <ion-list>
+    <ion-item *ngFor="let item of data" (click)="openViewModal(item)">
+      <ion-thumbnail item-start>
+        <img src="https://lh3.googleusercontent.com/d/{{ item.googleId }}">
+        <span class="duration">{{ getDurationStr(item.duration) }}</span>
+      </ion-thumbnail>
+      <h2 class="bold">
+        {{ item.title }}
+      </h2>
+      <p><small>{{ item.description }}</small></p>
+      <ion-badge *ngIf="self">{{ getPrivacyStr(item.privacyType) }}</ion-badge>
+    </ion-item>
+
+    <ion-item *ngIf="!data.length">
+      <h2 class="text-muted text-center">
+        There are no videos available.
+        <br>
+        <br>
+        <button ion-button *ngIf="self" (click)="openUploadModal()">Upload</button>
+      </h2>
+    </ion-item>
+  </ion-list>
+</ion-content>

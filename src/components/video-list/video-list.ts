@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ModalController, LoadingController, ToastController } from 'ionic-angular';
+import { Refresher, ModalController, LoadingController, ToastController } from 'ionic-angular';
 import { VideoProvider } from '../../providers/video/video';
 import { UserProvider } from '../../providers/user/user.provider';
 import { UploadFormComponent } from '../../components/upload-form/upload-form';
@@ -19,7 +19,6 @@ import { Observable } from 'rxjs/Rx';
 })
 export class VideoListComponent implements OnInit {
   data: any[] = [];
-  isLoading: boolean = false;
   @Input('ownerId') ownerId: string = '';
   @Input('userId') userId: string = '';
   @Input('self') self: any = null;
@@ -43,7 +42,7 @@ export class VideoListComponent implements OnInit {
     this.load();
   }
 
-  load() {
+  load(refresher?: any) {
     let loading = this.loadingCtrl.create({
       content: 'Loading'
     })
@@ -51,7 +50,6 @@ export class VideoListComponent implements OnInit {
     loading.present();
 
     let obs = null;
-    this.isLoading = true;
 
     if (this.self) {
       obs = this.userProvider.getVideos(this.self.id)
@@ -63,15 +61,16 @@ export class VideoListComponent implements OnInit {
     obs.subscribe(response => {
       this.data = response['data']
       loading.dismiss()
-      this.isLoading = false;
+      
+      if (refresher) { refresher.complete() }
     }, response => {
-      this.isLoading = false;
       this.toastCtrl.create({
         message: 'Couldn\'t get the feed.',
         duration: 2500,
         position: 'top'
       }).present()
 
+      if (refresher) { refresher.complete() }
       loading.dismiss()
     })
   }
@@ -109,10 +108,8 @@ export class VideoListComponent implements OnInit {
     return `${minutes.toString().length === 1 ? '0' : ''}${minutes}:${seconds.toString().length === 1 ? '0' : ''}${seconds}`
   }
 
-  processPan(e) {
-    if (e.additionalEvent === 'pandown' && this.canRefresh && !this.isLoading) {
-      this.load()
-    }
+  refresh(e) {
+    this.load(e)
   }
 
 }
