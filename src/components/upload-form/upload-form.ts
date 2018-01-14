@@ -40,7 +40,7 @@ export class UploadFormComponent {
     },
     {
       name: 'Entertainment',
-      value: 'ENTERTAINMENT'
+      value: 'ENTERTAIMENT'
     },
     {
       name: 'Comedy',

@@ -23,6 +23,33 @@ export class VideoListComponent implements OnInit {
   @Input('userId') userId: string = '';
   @Input('self') self: any = null;
   @Input('refresh') canRefresh: boolean = false;
+  categories: any[] = [
+    {
+      name: 'Music',
+      value: 'MUSIC'
+    },
+    {
+      name: 'Entertainment',
+      value: 'ENTERTAIMENT'
+    },
+    {
+      name: 'Comedy',
+      value: 'COMEDY'
+    },
+    {
+      name: 'Games',
+      value: 'GAMES'
+    },
+    {
+      name: 'Sports',
+      value: 'SPORTS'
+    },
+    {
+      name: 'Science',
+      value: 'SCIENCE'
+    },
+  ];
+  selectedCategory: any = '';
 
   constructor(private userProvider: UserProvider, private videoProvider: VideoProvider, public modalCtrl: ModalController, public loadingCtrl: LoadingController, public toastCtrl: ToastController, private authService: AuthService) {
     //
@@ -55,7 +82,7 @@ export class VideoListComponent implements OnInit {
       obs = this.userProvider.getVideos(this.self.id)
     }
     else {
-      obs = this.videoProvider.list({ ownerId: this.ownerId, userId: this.userId })
+      obs = this.videoProvider.list({ ownerId: this.ownerId, userId: this.userId, category: this.selectedCategory })
     }
 
     obs.subscribe(response => {
